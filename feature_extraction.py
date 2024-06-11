@@ -1,5 +1,7 @@
 import librosa
 import numpy as np
+from tkinter import messagebox
+import resampy
 
 
 def add_noise(data):
@@ -64,8 +66,7 @@ def extract_features(file_name):
         result.shape
 
     except Exception as e:
-        print("Error encountered while parsing file: ", file_name)
-        print("Error Details:", e)
+        messagebox.showerror("Ошибка", f"Ошибка обработки аудиофайла: {str(e)}")
         return None
 
     return result

@@ -1,6 +1,7 @@
 import pygame
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import resampy
 
 # Инициализация Pygame
 pygame.mixer.init()

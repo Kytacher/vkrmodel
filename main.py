@@ -4,18 +4,34 @@ import pygame
 from tensorflow.keras.models import load_model
 import pickle
 from prediction import analyze
+import os
+import sys
+import resampy
 
 # Инициализация Pygame
 pygame.mixer.init()
 
-# Загрузка модели и весов
-model_path = './mymodel.h5'
-weights_path = './weights.h5'
-model = load_model(model_path)
-model.load_weights(weights_path)
+# Определяем, запущено ли приложение из исполняемого файла
+is_frozen = getattr(sys, 'frozen', False)
 
-with open('./scaler.pkl', 'rb') as file:
-    loaded_scaler = pickle.load(file)
+# Загрузка модели и весов
+# Определяем путь к файлу mymodel.h5 в зависимости от того, запущено ли приложение из исходного кода или из исполняемого файла
+if is_frozen:
+    # Запущено из исполняемого файла, используем sys._MEIPASS
+    model_path = os.path.join(sys._MEIPASS, 'mymodel.h5')
+    weights_path = os.path.join(sys._MEIPASS, 'weights.h5')
+    model = load_model(model_path)
+    model.load_weights(weights_path)
+    with open(os.path.join(sys._MEIPASS, './scaler.pkl'), 'rb') as file:
+        loaded_scaler = pickle.load(file)
+else:
+    # Запущено из исходного кода, используем относительный путь
+    model_path = './mymodel.h5'
+    weights_path = './weights.h5'
+    model = load_model(model_path)
+    model.load_weights(weights_path)
+    with open('./scaler.pkl', 'rb') as file:
+        loaded_scaler = pickle.load(file)
 
 disease = ['Бронхоэктатическая болезнь', 'Бронхиолит', 'Хроническая обструктивная болезнь легких (ХОБЛ)', 'Здоров', 'Пневмония', 'URTL']
 
@@ -27,7 +43,19 @@ audio_file_path = ""
 def run_app():
     root = tk.Tk()
     root.title("RespPredict")
-    root.iconbitmap(r'./icon.ico')
+
+    # Определяем путь к иконке в зависимости от того, запущено ли приложение из исходного кода или из исполняемого файла
+    if is_frozen:
+    # Запущено из исполняемого файла, используем sys._MEIPASS
+        icon_path = os.path.join(sys._MEIPASS, 'icon.ico')
+    else:
+    # Запущено из исходного кода, используем относительный путь
+        icon_path = './icon.ico'
+
+    # Устанавливаем иконку для окна
+    root.iconbitmap(icon_path)
+
+    # root.iconbitmap(r'./icon.ico')
 
     left_frame = tk.Frame(root)
     right_frame = tk.Frame(root)

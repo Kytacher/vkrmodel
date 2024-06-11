@@ -1,6 +1,8 @@
 import tkinter as tk
 from feature_extraction import prepare
 import numpy as np
+from tkinter import messagebox
+import resampy
 
 def predict_on_batch(batched_input, model):
     return model(batched_input)
@@ -10,7 +12,7 @@ def analyze(results_text, audio_file_path, loaded_scaler, model, disease):
 
     # Проверяем, загружен ли аудиофайл
     if not audio_file_path:
-        print("Аудиофайл не загружен.")
+        messagebox.showerror("Ошибка", "Аудиофайл не загружен")
         return  # Прекращаем выполнение функции
     
     flattened_features = prepare(audio_file_path, loaded_scaler)
