@@ -26,7 +26,7 @@ audio_file_path = ""
 # Функция для запуска приложения
 def run_app():
     root = tk.Tk()
-    root.title("Medical Data Processor")
+    root.title("RespPredict")
     root.iconbitmap(r'./icon.ico')
 
     left_frame = tk.Frame(root)
