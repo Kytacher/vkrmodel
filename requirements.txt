@@ -1,0 +1,8 @@
+numpy
+pygame
+pickle
+tensorflow.keras.models
+sys
+os
+tkinter
+librosa
